@@ -1,0 +1,243 @@
+package com.ottoman.duckHunt;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer10;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Align;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+//import com.badlogic.gdx.tests.utils.GdxTest;
+import com.badlogic.gdx.utils.Scaling;
+
+public class duckHunt extends GdxTest implements InputProcessor  {
+	
+	private static final int NUM_GROUPS = 5;
+    private static final int NUM_SPRITES = (int)Math.sqrt(400 / NUM_GROUPS);
+    private static final float SPACING = 5;
+    ShapeRenderer renderer;
+    Stage stage;
+    Stage ui;
+    Texture texture;
+    Texture uiTexture;
+    BitmapFont font;
+
+    boolean rotateSprites = false;
+    boolean scaleSprites = false;
+    float angle;
+    Vector2 point = new Vector2();
+    List<Image> images = new ArrayList<Image>();
+    float scale = 1;
+    float vScale = 1;
+
+	
+	
+	@Override
+	public void create() {
+		
+		texture = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
+        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        //font = new BitmapFont(Gdx.files.internal("data/arial-15.fnt"), false);
+        font = new BitmapFont();
+
+        stage = new Stage(480, 320, true);
+
+        float loc = (NUM_SPRITES * (32 + SPACING) - SPACING) / 2;
+        for (int i = 0; i < NUM_GROUPS; i++) {
+                Group group = new Group("group" + i);
+                group.x = (float)Math.random() * (stage.width() - NUM_SPRITES * (32 + SPACING));
+                group.y = (float)Math.random() * (stage.height() - NUM_SPRITES * (32 + SPACING));
+                group.originX = loc;
+                group.originY = loc;
+
+                fillGroup(group, texture);
+                stage.addActor(group);
+        }
+
+        uiTexture = new Texture(Gdx.files.internal("data/ui.png"));
+        uiTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        ui = new Stage(480, 320, false);
+
+        Image blend = new Image(new TextureRegion(uiTexture, 0, 0, 64, 32), Scaling.none, Align.CENTER, "blend") {
+                public boolean touchDown (float x, float y, int pointer) {
+                        if (stage.getSpriteBatch().isBlendingEnabled())
+                                stage.getSpriteBatch().disableBlending();
+                        else
+                                stage.getSpriteBatch().enableBlending();
+                        return false;
+                }
+        };
+        blend.width = blend.getPrefWidth();
+        blend.height = blend.getPrefHeight();
+        blend.y = ui.height() - 64;
+
+        Image rotate = new Image(new TextureRegion(uiTexture, 64, 0, 64, 32), Scaling.none, Align.CENTER, "rotate") {
+                public boolean touchDown (float x, float y, int pointer) {
+                        rotateSprites = !rotateSprites;
+                        return false;
+                }
+        };
+        rotate.width = rotate.getPrefWidth();
+        rotate.height = rotate.getPrefHeight();
+        rotate.y = blend.y;
+        rotate.x = 64;
+
+        Image scale = new Image(new TextureRegion(uiTexture, 64, 32, 64, 32), Scaling.none, Align.CENTER, "scale") {
+                public boolean touchDown (float x, float y, int pointer) {
+                        scaleSprites = !scaleSprites;
+                        return false;
+                }
+        };
+        scale.width = scale.getPrefWidth();
+        scale.height = scale.getPrefHeight();
+        scale.y = blend.y;
+        scale.x = 128;
+
+        ui.addActor(blend);
+        ui.addActor(rotate);
+        ui.addActor(scale);
+
+        Label fps = new Label("fps: 0", new Label.LabelStyle(font, Color.WHITE), "fps");
+        fps.x = 10;
+        fps.y = 30;
+        fps.color.set(0, 1, 0, 1);
+        ui.addActor(fps);
+
+        renderer = new ShapeRenderer();
+        Gdx.input.setInputProcessor(this);
+
+	}
+
+	 private void fillGroup (Group group, Texture texture) {
+         float advance = 32 + SPACING;
+         for (int y = 0; y < NUM_SPRITES * advance; y += advance)
+                 for (int x = 0; x < NUM_SPRITES * advance; x += advance) {
+                         Image img = new Image(new TextureRegion(texture), Scaling.none, Align.CENTER, group.name + "-sprite" + x * y);
+                         img.x = x;
+                         img.y = y;
+                         img.width = 32;
+                         img.height = 32;
+                         img.originX = 16;
+                         img.originY = 16;
+                         group.addActor(img);
+                         images.add(img);
+                 }
+ }
+
+	
+	
+	@Override
+	public void dispose() {
+	}
+
+	@Override
+	public void render() {
+		//Gdx.gl.glClearColor(1, 0, 1, 1);
+		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		 Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+         if (Gdx.input.isTouched()) {
+                 stage.toStageCoordinates(Gdx.input.getX(), Gdx.input.getY(), point);
+                 Actor actor = stage.hit(point.x, point.y);
+
+                 if (actor != null)
+                         if (actor instanceof Image)
+                                 ((Image)actor).color.set((float)Math.random(), (float)Math.random(), (float)Math.random(),
+                                         0.5f + 0.5f * (float)Math.random());
+         }
+
+         int len = stage.getGroups().size();
+         for (int i = 0; i < len; i++)
+                 if (rotateSprites)
+                         stage.getGroups().get(i).rotation += Gdx.graphics.getDeltaTime();
+                 else
+                         stage.getGroups().get(i).rotation = 0;
+
+         scale += vScale * Gdx.graphics.getDeltaTime();
+         if (scale > 1) {
+                 scale = 1;
+                 vScale = -vScale;
+         }
+         if (scale < 0.5f) {
+                 scale = 0.5f;
+                 vScale = -vScale;
+         }
+
+         len = images.size();
+         for (int i = 0; i < len; i++) {
+                 Image img = images.get(i);
+                 if (rotateSprites)
+                         img.rotation -= 40 * Gdx.graphics.getDeltaTime();
+                 else
+                         img.rotation = 0;
+
+                 if (scaleSprites) {
+                         img.scaleX = scale;
+                         img.scaleY = scale;
+                 } else {
+                         img.scaleX = 1;
+                         img.scaleY = 1;
+                 }
+                 img.invalidate();
+         }
+
+         stage.draw();
+
+         renderer.begin(ShapeType.Point);
+         renderer.setColor(1, 0, 0, 1);
+         len = stage.getRoot().getGroups().size();
+         for (int i = 0; i < len; i++) {
+                 Group group = stage.getRoot().getGroups().get(i);
+                 renderer.point(group.x + group.originX, group.y + group.originY, 0);
+         }
+         renderer.end();
+
+         ((Label)ui.findActor("fps")).setText("fps: " + Gdx.graphics.getFramesPerSecond() + ", actors " + images.size()
+                 + ", groups " + stage.getGroups().size());
+         ui.draw();
+
+	}
+
+	@Override
+	public void resize(int width, int height) {
+	}
+
+	@Override
+	public void pause() {
+	}
+
+	@Override
+	public void resume() {
+	}
+	
+	
+	
+	@Override
+    public boolean touchDown (int x, int y, int pointer, int button) {
+            return ui.touchDown(x, y, pointer, button);
+    }
+    
+}
+
+
+
+
