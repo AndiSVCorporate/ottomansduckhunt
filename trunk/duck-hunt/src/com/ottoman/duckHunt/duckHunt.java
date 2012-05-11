@@ -34,7 +34,7 @@ import com.badlogic.gdx.utils.Scaling;
 	
 	
     SpriteBatch                     spriteBatch;            // #6
-    HuntActor runningMan; 
+    HuntActor flyDuck1;HuntActor flyDuck2;HuntActor flyDuck3; 
     HuntStage duckHuntStg ;
 	
 	@Override
@@ -43,10 +43,20 @@ import com.badlogic.gdx.utils.Scaling;
 		
         spriteBatch = new SpriteBatch();                                // #12
 		duckHuntStg = new HuntStage(480, 320, true, spriteBatch);
-		runningMan = new HuntActor(new Texture(Gdx.files.internal("data/animation_sheet.png")), 5, 6, 0.025f, true);
-		runningMan.x = 100;
-		runningMan.y = 100;
-		duckHuntStg.addActor(runningMan);
+		flyDuck1 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 32, 32);
+		flyDuck1.x = 100;
+		flyDuck1.y = 100;
+		duckHuntStg.addActor(flyDuck1);
+
+		flyDuck2 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 48, 48);
+		flyDuck2.x = 200;
+		flyDuck2.y = 100;
+		duckHuntStg.addActor(flyDuck2);
+
+		flyDuck3 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 64, 64);
+		flyDuck3.x = 300;
+		flyDuck3.y = 100;
+		duckHuntStg.addActor(flyDuck3);
 
 	}
 
