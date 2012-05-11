@@ -13,9 +13,24 @@ public class HuntActor extends Actor {
     TextureRegion                   currentFrame;           // #7
     private float stateTime;
     private boolean looping;
+
     public HuntActor(Texture texture, int rows, int cols, float frameDuration, boolean looping)
     {
-        this.looping = looping;
+ 
+        int tileWidth = texture.getWidth() / cols;
+        int tileHeight = texture.getHeight() / rows;
+        contructCode(texture, rows, cols, frameDuration, looping, tileWidth, tileHeight);
+ 
+    }
+    
+    public HuntActor(Texture texture, int rows, int cols, float frameDuration, boolean looping, float iWidth, float iHeight)
+    {
+        contructCode(texture, rows, cols, frameDuration, looping, iWidth, iHeight);
+ 
+    }
+    
+    private void contructCode(Texture texture, int rows, int cols, float frameDuration, boolean looping, float iWidth, float iHeight){
+this.looping = looping;
  
         int tileWidth = texture.getWidth() / cols;
         int tileHeight = texture.getHeight() / rows;
@@ -32,13 +47,13 @@ public class HuntActor extends Actor {
             }
         }
  
-        width = tileWidth;
-        height = tileHeight;
+        width = iWidth;
+        height = iHeight;
  
         walkAnimation = new Animation(frameDuration, walkFrames);
-        stateTime = 0f;
- 
+        stateTime = 0f;    	
     }
+    
     /**
      * Reset animation.
      *
@@ -70,7 +85,7 @@ public class HuntActor extends Actor {
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = walkAnimation.getKeyFrame(stateTime, this.looping);
 		
-		batch.draw(currentFrame, x, y);
+		batch.draw(currentFrame, x, y, width, height);
 	}
 
 	@Override
