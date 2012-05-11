@@ -34,32 +34,18 @@ import com.ottoman.duckHunt.Sprite.HuntActor;
 //public class duckHunt implements ApplicationListener  {
 	public class duckHunt extends Game  {
 	
-	
-    SpriteBatch                     spriteBatch;            // #6
-    HuntActor flyDuck1;HuntActor flyDuck2;HuntActor flyDuck3; 
-    HuntStage duckHuntStg ;
-	
+		PlayScreen newGame = new PlayScreen(this);
+        
+		SpriteBatch                     spriteBatch;            // #6
+	    
+	    BitmapFont font;
+	    
 	@Override
 	public void create() {
 		
-		
-        spriteBatch = new SpriteBatch();                                // #12
-		duckHuntStg = new HuntStage(480, 320, true, spriteBatch);
-		flyDuck1 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 32, 32);
-		flyDuck1.x = 100;
-		flyDuck1.y = 100;
-		duckHuntStg.addActor(flyDuck1);
-
-		flyDuck2 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 48, 48);
-		flyDuck2.x = 200;
-		flyDuck2.y = 100;
-		duckHuntStg.addActor(flyDuck2);
-
-		flyDuck3 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 64, 64);
-		flyDuck3.x = 300;
-		flyDuck3.y = 100;
-		duckHuntStg.addActor(flyDuck3);
-
+		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
+		font.setColor(Color.WHITE);
 	}
 
 	 
@@ -68,15 +54,19 @@ import com.ottoman.duckHunt.Sprite.HuntActor;
 	
 	@Override
 	public void dispose() {
+		newGame.dispose();
 	}
 
 	@Override
 	public void render() {
-		 Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
-        
-        // spriteBatch.begin();
-        duckHuntStg.draw();
-        // spriteBatch.end();
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
+        spriteBatch.begin();
+        font.draw(spriteBatch, "ulaaayn - :'(", 10, 10);
+        spriteBatch.end();
+        if(Gdx.input.justTouched())
+        	setScreen(newGame);
+
+		super.render();
 
 	}
 
