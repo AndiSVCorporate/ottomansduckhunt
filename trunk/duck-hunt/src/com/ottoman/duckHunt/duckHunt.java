@@ -28,6 +28,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 //import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.Scaling;
+import com.ottoman.duckHunt.Scene.HuntStage;
+import com.ottoman.duckHunt.Sprite.HuntActor;
 
 //public class duckHunt implements ApplicationListener  {
 	public class duckHunt extends Game  {
