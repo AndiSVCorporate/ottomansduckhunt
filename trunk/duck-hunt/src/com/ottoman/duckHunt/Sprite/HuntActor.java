@@ -43,13 +43,14 @@ this.looping = looping;
         {
             for (int j = 0; j < cols; j++)
             {
+            	tmp[i][j].flip(true, false);
             	walkFrames[index++] = tmp[i][j];
             }
         }
  
         width = iWidth;
         height = iHeight;
- 
+        
         walkAnimation = new Animation(frameDuration, walkFrames);
         stateTime = 0f;    	
     }
