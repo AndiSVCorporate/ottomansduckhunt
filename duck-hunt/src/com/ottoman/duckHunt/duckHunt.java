@@ -35,7 +35,7 @@ import com.ottoman.duckHunt.Sprite.HuntActor;
 	public class duckHunt extends Game  {
 	
 		PlayScreen newGame = new PlayScreen(this);
-        
+        MainMenuScreen mainMenu = new MainMenuScreen(this);
 		SpriteBatch                     spriteBatch;            // #6
 	    
 	    BitmapFont font;
@@ -46,6 +46,7 @@ import com.ottoman.duckHunt.Sprite.HuntActor;
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
+		setScreen(mainMenu);
 	}
 
 	 
@@ -55,6 +56,7 @@ import com.ottoman.duckHunt.Sprite.HuntActor;
 	@Override
 	public void dispose() {
 		newGame.dispose();
+		mainMenu.dispose();
 	}
 
 	@Override
@@ -63,8 +65,8 @@ import com.ottoman.duckHunt.Sprite.HuntActor;
         spriteBatch.begin();
         font.draw(spriteBatch, "ulaaayn - :'(", 10, 10);
         spriteBatch.end();
-        if(Gdx.input.justTouched())
-        	setScreen(newGame);
+        
+        	
 
 		super.render();
 
