@@ -48,7 +48,7 @@ public class MainMenuScreen implements Screen {
 		spriteBatch = new SpriteBatch();                                // #12
 		menuStage = new Stage(480, 320, true);
 		Gdx.input.setInputProcessor(menuStage);
-		actNewBtn = new Button(new TextureRegion(new Texture(Gdx.files.internal("data/badlogic.jpg"))));
+		actNewBtn = new Button(new TextureRegion(new Texture(Gdx.files.internal("data/button-new.png"))));
 		actNewBtn.setClickListener(new ClickListener() {
 
 
