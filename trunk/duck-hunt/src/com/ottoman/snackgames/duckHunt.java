@@ -53,7 +53,6 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 	 
 
 	
-	
 	@Override
 	public void dispose() {
 		newGame.dispose();
@@ -64,7 +63,7 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
         spriteBatch.begin();
-        font.draw(spriteBatch, "ulaaayn - :'(", 10, 10);
+        //font.draw(spriteBatch, "ulaaayn - :'(", 10, 10);
         spriteBatch.end();
         
         	

@@ -2,6 +2,7 @@ package com.ottoman.snackgames;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.ottoman.snackgames.Scene.HuntStage;
 import com.ottoman.snackgames.Sprite.HuntActor;
+import com.ottoman.snackgames.Sprite.JoyStick;
 
 public class PlayScreen implements Screen {
     SpriteBatch                     spriteBatch;            // #6
@@ -30,12 +32,16 @@ public class PlayScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
 		for(Actor act : duckHuntStg.getActors()){
 			act.x++;
+			if(act.x>Gdx.graphics.getWidth()){
+				act.x = -act.width;
+			}
 		}
         duckHuntStg.draw();
         spriteBatch.begin();
-        font.draw(spriteBatch, "laaan - :(", 10, 10);
+        //font.draw(spriteBatch, "laaan - :(", 10, 10);
         spriteBatch.end();
         
+
 	}
 
 	@Override
@@ -50,7 +56,7 @@ public class PlayScreen implements Screen {
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
         spriteBatch = new SpriteBatch();                                // #12
-		duckHuntStg = new HuntStage(480, 320, true, spriteBatch);
+		duckHuntStg = new HuntStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 		flyDuck1 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 64, 64);
 		flyDuck1.x = 0;
 		flyDuck1.y = 150;
@@ -65,6 +71,11 @@ public class PlayScreen implements Screen {
 		flyDuck3.x = 0;
 		flyDuck3.y = 250;
 		duckHuntStg.addActor(flyDuck3);
+		
+		JoyStick js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
+		Gdx.input.setInputProcessor(js);
+		duckHuntStg.addActor(js);
+		
 	}
 
 	@Override
