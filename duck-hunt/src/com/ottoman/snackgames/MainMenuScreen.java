@@ -19,7 +19,7 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 public class MainMenuScreen implements Screen {
     SpriteBatch                     spriteBatch;            // #6
     Button actNewBtn; 
-    Stage menuStage ;
+    HuntStage menuStage ;
     BitmapFont font;
     
     duckHunt game; 
@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
 	public void show() {
 		// TODO Auto-generated method stub
 		spriteBatch = new SpriteBatch();                                // #12
-		menuStage = new Stage(480, 320, true);
+		menuStage = new HuntStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 		Gdx.input.setInputProcessor(menuStage);
 		actNewBtn = new Button(new TextureRegion(new Texture(Gdx.files.internal("data/button-new.png"))));
 		actNewBtn.setClickListener(new ClickListener() {
@@ -65,10 +65,11 @@ public class MainMenuScreen implements Screen {
 		
 	}
 
+	  
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
+		//Gdx.input.
 	}
 
 	@Override
@@ -86,6 +87,7 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		if(menuStage!=null)
 		menuStage.dispose();
 	}
 
