@@ -73,9 +73,9 @@ public class PlayScreen implements Screen {
 		duckHuntStg.addActor(flyDuck3);
 		
 		JoyStick js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
-		Gdx.input.setInputProcessor(js);
-		duckHuntStg.addActor(js);
 		
+		duckHuntStg.addActor(js);
+		Gdx.input.setInputProcessor(duckHuntStg);
 	}
 
 	@Override

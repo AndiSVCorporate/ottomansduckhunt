@@ -8,47 +8,29 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class JoyStick extends Actor implements InputProcessor {
+public class JoyStick extends Actor {
 
 	private Texture stick;
 	boolean isTouched = false;
-	int _x=0;int _y=0;
+	float _x=0;float _y=0;
     BitmapFont font;
 
 	public JoyStick(Texture texture){
 		stick = texture;
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
+		this.touchable = true;
 	}
 	
 	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		isTouched = true;
-		_x = x;_y=y;
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		isTouched = false;
-		_x = x;_y=y;
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub
-		_x = x;_y=y;
-		return false;
-	}
-
-	@Override
-	public boolean touchMoved(int x, int y) {
-		// TODO Auto-generated method stub
-		_x = x;_y=y;
-		return false;
+    public boolean touchDown(float x, float y, int pointer) {
+		isTouched = true;_x = x;_y=y;
+        return super.touchDown(x, y, pointer);
+    }
+	
+	@Override 
+	public void touchUp(float x, float y, int pointer) {
+		isTouched = false;_x = x;_y=y;
 	}
 
 	@Override
