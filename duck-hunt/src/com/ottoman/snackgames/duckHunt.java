@@ -72,6 +72,7 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 
 	}
 
+	
 	@Override
 	public void resize(int width, int height) {
 	}
