@@ -11,6 +11,13 @@ public class HuntStage extends Stage {
 			SpriteBatch batch) {
 		super(width, height, stretch, batch);
 		// TODO Auto-generated constructor stub
+		
+	}
+	
+	@Override
+	public boolean touchDown(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return super.touchDown(x, y, pointer, button);
 	}
 
 }
