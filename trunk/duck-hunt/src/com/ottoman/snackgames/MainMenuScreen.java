@@ -3,18 +3,15 @@ package com.ottoman.snackgames;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.ottoman.snackgames.Scene.HuntStage;
-import com.ottoman.snackgames.Sprite.HuntActor;
 
 public class MainMenuScreen implements Screen {
     SpriteBatch                     spriteBatch;            // #6
@@ -23,7 +20,7 @@ public class MainMenuScreen implements Screen {
     BitmapFont font;
     
     duckHunt game; 
-
+    
     public MainMenuScreen(duckHunt game){
         this.game = game;
     }
