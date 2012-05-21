@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.ottoman.snackgames.Scene.HuntStage;
+import com.ottoman.snackgames.Sprite.CrossHair;
 import com.ottoman.snackgames.Sprite.HuntActor;
 import com.ottoman.snackgames.Sprite.JoyStick;
 
@@ -78,6 +79,8 @@ public class PlayScreen implements Screen {
 		JoyStick js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
 		duckHuntStg.addActor(js);
 		Gdx.input.setInputProcessor(js);
+		CrossHair cxh = new CrossHair(new Texture(Gdx.files.internal("data/target.png")), js);
+		duckHuntStg.addActor(cxh);
 	}
 
 	@Override
