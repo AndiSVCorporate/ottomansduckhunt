@@ -21,14 +21,16 @@ public class JoyStick extends Actor implements InputProcessor {
     public float jX = 0;
     public float jY = 0;
 
+    private int offSet=32;
+    
 	public JoyStick(Texture texture){
 		stick = texture;
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
 		this.width = texture.getWidth();
 		this.height = texture.getHeight();
-		centX = (int)((width / 2) + 10) ;
-		centY = (int)((height / 2) + 10) ;
+		centX = (int)((width / 2) + offSet) ;
+		centY = (int)((height / 2) + offSet) ;
 		rad = (int) (width / 2);
 	}
 	
@@ -42,7 +44,7 @@ public class JoyStick extends Actor implements InputProcessor {
 		// TODO Auto-generated method stub
 		_x = x;_y=Gdx.graphics.getHeight() - y;
 		
-		isTouched =_x > 10 && _x < width +10 && _y > 10 && _y < height +10 ? true : false;
+		isTouched =_x > offSet && _x < width +offSet && _y > offSet && _y < height +offSet ? true : false;
 		return false;
 	}
 
@@ -71,7 +73,7 @@ public class JoyStick extends Actor implements InputProcessor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
-        batch.draw(stick, 10, 10, width, height);
+        batch.draw(stick, offSet, offSet, width, height);
         if(isTouched){
         	int d = getDistance();
         	int coorX =_x;

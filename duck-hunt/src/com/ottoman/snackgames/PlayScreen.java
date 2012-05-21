@@ -2,6 +2,7 @@ package com.ottoman.snackgames;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -9,8 +10,14 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
+import com.esotericsoftware.tablelayout.Cell;
 import com.ottoman.snackgames.Scene.HuntStage;
 import com.ottoman.snackgames.Sprite.CrossHair;
 import com.ottoman.snackgames.Sprite.HuntActor;
@@ -20,8 +27,9 @@ public class PlayScreen implements Screen {
     SpriteBatch                     spriteBatch;            // #6
     HuntActor flyDuck1;HuntActor flyDuck2;HuntActor flyDuck3; 
     HuntStage duckHuntStg ;Stage ctrlStg;
-    BitmapFont font;
-    
+    CrossHair cxh;    BitmapFont font;
+    InputMultiplexer mplexer;
+    String fireMsg = "";
     duckHunt game; 
 
     public PlayScreen(duckHunt game){
@@ -41,7 +49,7 @@ public class PlayScreen implements Screen {
         duckHuntStg.draw();
         ctrlStg.draw();
         spriteBatch.begin();
-        //font.draw(spriteBatch, "laaan - :(", 10, 10);
+        font.draw(spriteBatch, fireMsg, 700, 400);
         spriteBatch.end();
         
 
@@ -78,9 +86,29 @@ public class PlayScreen implements Screen {
 		
 		JoyStick js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
 		duckHuntStg.addActor(js);
-		Gdx.input.setInputProcessor(js);
-		CrossHair cxh = new CrossHair(new Texture(Gdx.files.internal("data/target.png")), js);
+		mplexer = new InputMultiplexer();
+		
+		mplexer.addProcessor(js);
+		
+		//Gdx.input.setInputProcessor(js);
+		
+		cxh = new CrossHair(new Texture(Gdx.files.internal("data/target.png")), js);
+		
+		Button fireBtn = new Button(new TextureRegion(new Texture(Gdx.files.internal("data/target.png"))));
+		fireBtn.setClickListener(new ClickListener() {
+			@Override
+			public void click(Actor actor, float x, float y) {
+				// TODO Auto-generated method stub
+				fireMsg = "fire : " + cxh.getXPos() + " - " + cxh.getYPos(); 
+			}
+	    });
+		fireBtn.x = 700;
+		fireBtn.y = 128;
 		duckHuntStg.addActor(cxh);
+		
+		ctrlStg.addActor(fireBtn);
+		mplexer.addProcessor(ctrlStg);
+		Gdx.input.setInputProcessor(mplexer);
 	}
 
 	@Override

@@ -51,4 +51,12 @@ public class CrossHair extends Actor {
 		return null;
 	}
 
+	public int getXPos(){
+		return xPos;
+	}
+	
+	public int getYPos(){
+		return yPos;
+	}
+	
 }
