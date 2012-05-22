@@ -2,6 +2,7 @@ package com.ottoman.snackgames;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -23,10 +24,10 @@ import com.ottoman.snackgames.Sprite.CrossHair;
 import com.ottoman.snackgames.Sprite.HuntActor;
 import com.ottoman.snackgames.Sprite.JoyStick;
 
-public class PlayScreen implements Screen {
+public class PlayScreen extends InputAdapter implements Screen {
     SpriteBatch                     spriteBatch;            // #6
     HuntActor flyDuck1;HuntActor flyDuck2;HuntActor flyDuck3; 
-    HuntStage duckHuntStg ;Stage ctrlStg;
+    HuntStage duckHuntStg ;Stage ctrlStg;JoyStick js;
     CrossHair cxh;    BitmapFont font;
     InputMultiplexer mplexer;
     String fireMsg = "";
@@ -46,11 +47,27 @@ public class PlayScreen implements Screen {
 				act.x = -act.width;
 			}
 		}
+		
         duckHuntStg.draw();
         ctrlStg.draw();
         spriteBatch.begin();
-        font.draw(spriteBatch, fireMsg, 700, 400);
-        spriteBatch.end();
+        
+        if(Gdx.input.isKeyPressed(Keys.BACK))
+        	game.setScreen(game.mainMenu);
+        /*
+		for (int i = 1; i < 10; i++) {
+            if (Gdx.input.isTouched(i) == false) continue;
+
+            float x = Gdx.input.getX(i);
+            float y = Gdx.graphics.getHeight() - Gdx.input.getY(i) - 1;
+            font.draw(spriteBatch, fireMsg + " TouchX =" + x + ", TouchY = " + y, 100, 400);
+    }*/
+		//font.draw(spriteBatch, fireMsg, 100, 400);
+        if(js.isBtnFired){
+          font.draw(spriteBatch, "fire : " + cxh.getXPos() + " - " + cxh.getYPos(), 100, 400);
+          js.isBtnFired = false;
+        }
+		spriteBatch.end();
         
 
 	}
@@ -64,6 +81,7 @@ public class PlayScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
+
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
         spriteBatch = new SpriteBatch();                                // #12
@@ -84,16 +102,14 @@ public class PlayScreen implements Screen {
 		flyDuck3.y = 250;
 		duckHuntStg.addActor(flyDuck3);
 		
-		JoyStick js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
-		duckHuntStg.addActor(js);
+		js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
 		mplexer = new InputMultiplexer();
 		
-		mplexer.addProcessor(js);
 		
 		//Gdx.input.setInputProcessor(js);
 		
 		cxh = new CrossHair(new Texture(Gdx.files.internal("data/target.png")), js);
-		
+		/*
 		Button fireBtn = new Button(new TextureRegion(new Texture(Gdx.files.internal("data/target.png"))));
 		fireBtn.setClickListener(new ClickListener() {
 			@Override
@@ -102,12 +118,16 @@ public class PlayScreen implements Screen {
 				fireMsg = "fire : " + cxh.getXPos() + " - " + cxh.getYPos(); 
 			}
 	    });
+	    
 		fireBtn.x = 700;
 		fireBtn.y = 128;
-		duckHuntStg.addActor(cxh);
+        */
+		ctrlStg.addActor(cxh);
+		ctrlStg.addActor(js);
+		//ctrlStg.addActor(fireBtn);
 		
-		ctrlStg.addActor(fireBtn);
-		mplexer.addProcessor(ctrlStg);
+		mplexer.addProcessor(js);
+		//mplexer.addProcessor(ctrlStg);
 		Gdx.input.setInputProcessor(mplexer);
 	}
 
@@ -134,6 +154,7 @@ public class PlayScreen implements Screen {
 		// TODO Auto-generated method stub
 		if(duckHuntStg!=null)
 		duckHuntStg.dispose();
+		ctrlStg.dispose();
 	}
 
 }

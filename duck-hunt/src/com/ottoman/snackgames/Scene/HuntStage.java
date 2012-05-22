@@ -14,10 +14,11 @@ public class HuntStage extends Stage {
 		
 	}
 	
+	
 	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
+	public void draw() {
 		// TODO Auto-generated method stub
-		return super.touchDown(x, y, pointer, button);
+		
+		super.draw();
 	}
-
 }
