@@ -1,8 +1,11 @@
 package com.ottoman.snackgames;
 
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,7 +31,8 @@ public class MainMenuScreen implements Screen {
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
-		
+		if(Gdx.input.isKeyPressed(Keys.BACK))
+		Gdx.app.exit();
 		menuStage.draw();
         
 	}

@@ -29,8 +29,8 @@ public class CrossHair extends Actor {
 		upBound = Gdx.graphics.getHeight();loBound = 0; 
 		rtBound = Gdx.graphics.getWidth();ltBound = 0; 
 
-		xPos = (upBound - loBound) / 2;
-		yPos = (rtBound - ltBound) / 2;
+		xPos = (rtBound - ltBound) / 2;
+		yPos = (upBound - loBound) / 2;
 		
 	}
 	
