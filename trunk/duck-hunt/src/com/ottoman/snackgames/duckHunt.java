@@ -43,7 +43,6 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 	    
 	@Override
 	public void create() {
-		Gdx.input.setCatchBackKey(true);
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);

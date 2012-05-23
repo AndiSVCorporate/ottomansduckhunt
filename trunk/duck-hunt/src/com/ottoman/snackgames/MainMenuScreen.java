@@ -12,14 +12,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.ottoman.snackgames.Scene.HuntStage;
 
 public class MainMenuScreen implements Screen {
     SpriteBatch                     spriteBatch;            // #6
     Button actNewBtn; 
-    HuntStage menuStage ;
+    Stage menuStage ;
     BitmapFont font;
     
     duckHunt game; 
@@ -31,8 +31,7 @@ public class MainMenuScreen implements Screen {
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
-		if(Gdx.input.isKeyPressed(Keys.BACK))
-		Gdx.app.exit();
+		
 		menuStage.draw();
         
 	}
@@ -46,8 +45,9 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
+		
 		spriteBatch = new SpriteBatch();                                // #12
-		menuStage = new HuntStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
+		menuStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 		Gdx.input.setInputProcessor(menuStage);
 		actNewBtn = new Button(new TextureRegion(new Texture(Gdx.files.internal("data/button-new.png"))));
 		actNewBtn.setClickListener(new ClickListener() {
@@ -70,7 +70,7 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		//Gdx.input.
+		
 	}
 
 	@Override

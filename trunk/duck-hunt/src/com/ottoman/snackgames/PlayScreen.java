@@ -26,7 +26,6 @@ import com.ottoman.snackgames.Sprite.JoyStick;
 
 public class PlayScreen extends InputAdapter implements Screen {
     SpriteBatch                     spriteBatch;            // #6
-    HuntActor flyDuck1;HuntActor flyDuck2;HuntActor flyDuck3; 
     HuntStage duckHuntStg ;Stage ctrlStg;JoyStick js;
     CrossHair cxh;    BitmapFont font;
     InputMultiplexer mplexer;
@@ -41,12 +40,6 @@ public class PlayScreen extends InputAdapter implements Screen {
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
-		for(Actor act : duckHuntStg.getActors()){
-			act.x++;
-			if(act.x>Gdx.graphics.getWidth()){
-				act.x = -act.width;
-			}
-		}
 		
         duckHuntStg.draw();
         ctrlStg.draw();
@@ -65,6 +58,13 @@ public class PlayScreen extends InputAdapter implements Screen {
 		//font.draw(spriteBatch, fireMsg, 100, 400);
         if(js.isBtnFired){
           font.draw(spriteBatch, "fire : " + cxh.getXPos() + " - " + cxh.getYPos(), 100, 400);
+	  		for(Actor act : duckHuntStg.getActors()){
+				
+	  			if(act.hit(cxh.getXPos(), cxh.getYPos())!=null)
+				act.remove();
+				
+	  		}
+	
           js.isBtnFired = false;
         }
 		spriteBatch.end();
@@ -81,26 +81,12 @@ public class PlayScreen extends InputAdapter implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-
+		Gdx.input.setCatchBackKey(true);
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
         spriteBatch = new SpriteBatch();                                // #12
 		duckHuntStg = new HuntStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 		ctrlStg = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
-		flyDuck1 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 64, 64);
-		flyDuck1.x = 0;
-		flyDuck1.y = 150;
-		duckHuntStg.addActor(flyDuck1);
-
-		flyDuck2 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 48, 48);
-		flyDuck2.x = 0;
-		flyDuck2.y = 200;
-		duckHuntStg.addActor(flyDuck2);
-
-		flyDuck3 = new HuntActor(new Texture(Gdx.files.internal("data/duck-fly.png")), 4, 3, 0.025f, true, 32, 32);
-		flyDuck3.x = 0;
-		flyDuck3.y = 250;
-		duckHuntStg.addActor(flyDuck3);
 		
 		js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
 		mplexer = new InputMultiplexer();
@@ -134,7 +120,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+		Gdx.input.setCatchBackKey(false);
 	}
 
 	@Override
@@ -154,6 +140,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 		// TODO Auto-generated method stub
 		if(duckHuntStg!=null)
 		duckHuntStg.dispose();
+		if(ctrlStg!=null)
 		ctrlStg.dispose();
 	}
 
