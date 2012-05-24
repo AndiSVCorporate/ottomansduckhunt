@@ -104,7 +104,7 @@ public class JoyStick extends Actor implements InputProcessor {
         	jX=0;jY=0;
         	batch.draw(stick, centX - 32, centY - 32, 64, 64);
         }
-        font.draw(batch, "X = "+_x+" , Y = " + _y + "", 150, 150);
+        //font.draw(batch, "X = "+_x+" , Y = " + _y + "", 150, 150);
 	}
 
 	@Override

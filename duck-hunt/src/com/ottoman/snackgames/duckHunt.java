@@ -43,6 +43,7 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 	    
 	@Override
 	public void create() {
+		Texture.setEnforcePotImages(false);
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
