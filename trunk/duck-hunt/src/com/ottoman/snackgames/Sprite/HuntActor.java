@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class HuntActor extends Actor {
@@ -13,20 +14,22 @@ public class HuntActor extends Actor {
     TextureRegion                   currentFrame;           // #7
     private float stateTime;
     private boolean looping;
-
+    private String _status;
+    public boolean flip = true;
+    
     public HuntActor(Texture texture, int rows, int cols, float frameDuration, boolean looping)
     {
  
         int tileWidth = texture.getWidth() / cols;
         int tileHeight = texture.getHeight() / rows;
         contructCode(texture, rows, cols, frameDuration, looping, tileWidth, tileHeight);
- 
+        _status = "fly";
     }
     
     public HuntActor(Texture texture, int rows, int cols, float frameDuration, boolean looping, float iWidth, float iHeight)
     {
         contructCode(texture, rows, cols, frameDuration, looping, iWidth, iHeight);
- 
+        _status = "fly"; 
     }
     
     private void contructCode(Texture texture, int rows, int cols, float frameDuration, boolean looping, float iWidth, float iHeight){
@@ -43,7 +46,7 @@ this.looping = looping;
         {
             for (int j = 0; j < cols; j++)
             {
-            	tmp[i][j].flip(true, false);
+            	//if(flip) {tmp[i][j].flip(true, false);}else{tmp[i][j].flip(false, false);}
             	walkFrames[index++] = tmp[i][j];
             }
         }
@@ -79,14 +82,45 @@ this.looping = looping;
         return walkAnimation.isAnimationFinished(stateTime);
     }
  
+    public boolean checkHit(float bX, float bY){
+    	
+    	if(bX>x && bX<x+width && bY>y && bY< y + height){
+    		_status = "hit";
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public String getStatus(){
+    	return _status;
+    }
+    
+    public void updatePos(){
+    	if(this.flip){
+    		this.x++;
+    		if(this.x>Gdx.graphics.getWidth()){
+				this.x = -this.width;
+			}
+    	}else{
+    		this.x--;
+    		if(this.x<0){
+				this.x = Gdx.graphics.getWidth();
+			}
+    	}
+    }
     
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
-		stateTime += Gdx.graphics.getDeltaTime();
-		currentFrame = walkAnimation.getKeyFrame(stateTime, this.looping);
-		
-		batch.draw(currentFrame, x, y, width, height);
+		if(_status == "fly"){
+		  stateTime += Gdx.graphics.getDeltaTime();
+		  currentFrame = walkAnimation.getKeyFrame(stateTime, this.looping);
+		}
+		TextureRegion tmpTr = new TextureRegion(currentFrame); 
+		if(flip)
+			tmpTr.flip(true, false);
+		batch.draw(tmpTr, x, y, width, height);
 	}
 
 	@Override
