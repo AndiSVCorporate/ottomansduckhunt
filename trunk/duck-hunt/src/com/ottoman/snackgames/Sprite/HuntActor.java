@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class HuntActor extends Actor {
@@ -83,7 +86,9 @@ this.looping = looping;
     }
  
     public boolean checkHit(float bX, float bY){
-    	
+    	//Circle cir = new Circle(new Vector2(this.x + (width / 2), this.y + (height / 2)), width/2);
+    	//Rectangle rect=  new Rectangle(this.x, this.y + (height / 2), width, height/2);
+    	//if(rect.contains(bX, bY)){
     	if(bX>x && bX<x+width && bY>y && bY< y + height){
     		_status = "hit";
     		return true;

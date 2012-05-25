@@ -17,6 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
 import com.esotericsoftware.tablelayout.Cell;
 import com.ottoman.snackgames.Scene.HuntStage;
@@ -27,13 +32,16 @@ import com.ottoman.snackgames.Sprite.JoyStick;
 public class PlayScreen extends InputAdapter implements Screen {
     SpriteBatch                     spriteBatch;            // #6
     Texture backGrnd;
-    HuntStage duckHuntStg ;Stage ctrlStg;JoyStick js;
-    CrossHair cxh;    BitmapFont font;
+    HuntStage duckHuntStg ;Stage ctrlStg;Stage ui;
+    JoyStick js;CrossHair cxh;BitmapFont font;
     InputMultiplexer mplexer;
     String fireMsg = "";
     duckHunt game; 
     private boolean isPaused = false;
-    
+    Window pauseWin;Skin skin;
+    float timePassed = 0;
+    int gameDuration = 90;
+    Label pauseLabel;
     
     public PlayScreen(duckHunt game){
         this.game = game;
@@ -43,19 +51,24 @@ public class PlayScreen extends InputAdapter implements Screen {
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);                                            // #14
+		
         spriteBatch.begin();
         spriteBatch.draw(backGrnd, 0, 0);
         
 		spriteBatch.end();
-		
+
         if(Gdx.input.isKeyPressed(Keys.BACK))
         	game.setScreen(game.mainMenu);
+        /*
         if(Gdx.input.isKeyPressed(Keys.MENU)){
         	isPaused = !isPaused;
         	duckHuntStg.setPause(isPaused);
+            pauseWin.visible = isPaused;
         }
+        */
 		//font.draw(spriteBatch, fireMsg, 100, 400);
         if(!isPaused){
+    		timePassed += Gdx.graphics.getDeltaTime();
             duckHuntStg.draw();
             ctrlStg.draw();
           if(js.isBtnFired){
@@ -64,18 +77,43 @@ public class PlayScreen extends InputAdapter implements Screen {
             js.isBtnFired = false;
           }
         }else{
-            spriteBatch.begin();
-        	font.setScale(4);
-        	font.draw(spriteBatch, "PAUSE", 128, Gdx.graphics.getHeight()/3);
-    		spriteBatch.end();
+            //ctrlStg.draw();
+            ui.draw();
+            //spriteBatch.begin();
+        	//font.setScale(4);
+        	//font.draw(spriteBatch, "PAUSE", 128, Gdx.graphics.getHeight()/3);
+    		//spriteBatch.end();
         }
-        
+        int timeElapsed =gameDuration - (int)timePassed;
+        int tmpMinute = (int)Math.floor(timeElapsed / 60);
+        String stElapsed = (tmpMinute < 10)?("0" + tmpMinute) : tmpMinute + "";
+        timeElapsed =(int) (timeElapsed - (tmpMinute * 60));
+        stElapsed = stElapsed + ":" + ((timeElapsed<10)?"0"+timeElapsed:timeElapsed+""); 
+        		
         spriteBatch.begin();
     	font.setScale(1);
         font.draw(spriteBatch, "Score = " + duckHuntStg.getHitScore(), 10, 460);
+        font.draw(spriteBatch, stElapsed, 650, 460);
 		spriteBatch.end();
-
+		if((int)timePassed==gameDuration){
+			pauseLabel.setText("Your Score is " + duckHuntStg.getHitScore());
+			isPaused = true;
+			duckHuntStg.setPause(isPaused);
+            pauseWin.visible = isPaused;
+		}
 	}
+	
+	@Override
+	public boolean keyUp(int keycode) {
+		if(keycode == Keys.MENU){
+			pauseLabel.setText("PAUSE");
+        	isPaused = !isPaused;
+        	duckHuntStg.setPause(isPaused);
+            pauseWin.visible = isPaused;
+
+		}
+		return false;
+	};
 
 	@Override
 	public void resize(int width, int height) {
@@ -85,7 +123,23 @@ public class PlayScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub4
+		skin = new Skin(Gdx.files.internal("data/uiskin.json"), Gdx.files.internal("data/uiskin.png"));
+		pauseWin = new Window("Pause", skin.getStyle(WindowStyle.class), "pauseWin");
+		pauseWin.x = Gdx.graphics.getWidth() / 4;
+		pauseWin.y = Gdx.graphics.getHeight() / 4;
+		pauseWin.height = Gdx.graphics.getHeight() / 2;
+		pauseWin.width = Gdx.graphics.getWidth() / 2;
+		pauseWin.defaults().spaceBottom(10);
+		pauseWin.setModal(true);
+		pauseWin.row().fill().expandX();
+		pauseLabel = new Label("PAUSE", skin.getStyle(LabelStyle.class), "label");
+		pauseWin.add(pauseLabel).colspan(4);
+		
+		//pauseWin.pack();
+		
+		pauseWin.visible = false;
+		
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
 		font = new BitmapFont(Gdx.files.internal("data/duck.fnt"), false);
@@ -94,14 +148,17 @@ public class PlayScreen extends InputAdapter implements Screen {
         backGrnd = new Texture(Gdx.files.internal("data/lake-view.jpg"));
 		duckHuntStg = new HuntStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 		ctrlStg = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
+		ui = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 		
 		js = new JoyStick(new Texture(Gdx.files.internal("data/joystick.png")));
 		mplexer = new InputMultiplexer();
 		cxh = new CrossHair(new Texture(Gdx.files.internal("data/target.png")), js);
 		ctrlStg.addActor(cxh);
 		ctrlStg.addActor(js);
+		ui.addActor(pauseWin);
 		
 		mplexer.addProcessor(js);
+		mplexer.addProcessor(this);
 		Gdx.input.setInputProcessor(mplexer);
 	}
 
