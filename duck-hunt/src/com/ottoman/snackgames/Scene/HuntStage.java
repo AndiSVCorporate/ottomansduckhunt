@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,9 +20,9 @@ public class HuntStage extends Stage {
 	private boolean justCreated = false; 
 	private int hitScore = 0;
     private boolean isPaused = false;	
-	
-	public HuntStage(float width, float height, boolean stretch,
-			SpriteBatch batch) {
+    Sound quack = Gdx.audio.newSound(Gdx.files.internal("data/quack.mp3"));
+
+	public HuntStage(float width, float height, boolean stretch, SpriteBatch batch) {
 		super(width, height, stretch, batch);
 		// TODO Auto-generated constructor stub
 	}
@@ -85,6 +86,7 @@ public class HuntStage extends Stage {
 			String distance = (tmpVal==0)?"close":((tmpVal==1)?"far":"medium");
 			addDuck(direction, distance);
 		}
+		quack.play();
 	}
 	
 	@Override
