@@ -38,7 +38,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     String fireMsg = "";
     duckHunt game; 
     private boolean isPaused = false;
-    Window pauseWin;Skin skin;
+    Window pauseWin;
+    Skin skin;
     float timePassed = 0;
     int gameDuration = 90;
     Label pauseLabel;
@@ -57,7 +58,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         
 		spriteBatch.end();
 
-        if(Gdx.input.isKeyPressed(Keys.BACK))
+        if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyPressed(Keys.ESCAPE))
         	game.setScreen(game.mainMenu);
         /*
         if(Gdx.input.isKeyPressed(Keys.MENU)){
@@ -97,6 +98,8 @@ public class PlayScreen extends InputAdapter implements Screen {
 		spriteBatch.end();
 		if((int)timePassed==gameDuration){
 			pauseLabel.setText("Your Score is " + duckHuntStg.getHitScore());
+			Settings.addScore(duckHuntStg.getHitScore());
+			Settings.save();
 			isPaused = true;
 			duckHuntStg.setPause(isPaused);
             pauseWin.visible = isPaused;
@@ -105,7 +108,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 	
 	@Override
 	public boolean keyUp(int keycode) {
-		if(keycode == Keys.MENU){
+		if(keycode == Keys.MENU || keycode == Keys.P){
 			pauseLabel.setText("PAUSE");
         	isPaused = !isPaused;
         	duckHuntStg.setPause(isPaused);

@@ -101,18 +101,21 @@ this.looping = looping;
     	return _status;
     }
     
-    public void updatePos(){
+    public boolean updatePos(){
     	if(this.flip){
     		this.x++;
     		if(this.x>Gdx.graphics.getWidth()){
-				this.x = -this.width;
+				//this.x = -this.width;
+    			return false;
 			}
     	}else{
     		this.x--;
-    		if(this.x<0){
-				this.x = Gdx.graphics.getWidth();
+    		if(this.x<-this.width){
+				//this.x = Gdx.graphics.getWidth();
+    			return false;
 			}
     	}
+    	return true;
     }
     
 	@Override
