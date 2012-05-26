@@ -104,7 +104,10 @@ public class HuntStage extends Stage {
 			//HuntActor duck = (HuntActor)act;
 				for(HuntActor duck : ducks){
 					if(duck.getStatus()=="fly"){
-						duck.updatePos();
+						if(!duck.updatePos()){
+							this.removeActor(duck);
+							duck.remove();
+						}
 					}else{
 						duck.y--;
 						if(duck.y<=0){

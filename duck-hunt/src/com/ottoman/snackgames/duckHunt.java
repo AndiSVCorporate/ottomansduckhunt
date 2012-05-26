@@ -38,11 +38,13 @@ import com.ottoman.snackgames.Sprite.HuntActor;
 		PlayScreen newGame = new PlayScreen(this);
         MainMenuScreen mainMenu = new MainMenuScreen(this);
 		SpriteBatch                     spriteBatch;            // #6
-	    
+	    //Settings duckSettings = new Settings();
 	    BitmapFont font;
 	    
 	@Override
 	public void create() {
+		Settings.load();
+		//duckSettings.load();
 		Texture.setEnforcePotImages(false);
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
