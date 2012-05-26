@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
@@ -43,6 +45,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     float timePassed = 0;
     int gameDuration = 90;
     Label pauseLabel;
+
+    Sound fire;   Music forest;
     
     public PlayScreen(duckHunt game){
         this.game = game;
@@ -74,6 +78,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             ctrlStg.draw();
           if(js.isBtnFired){
             //font.draw(spriteBatch, "fire : " + cxh.getXPos() + " - " + cxh.getYPos(), 100, 400);
+        	  fire.play();
             duckHuntStg.fireEvent(cxh.getXPos(), cxh.getYPos());
             js.isBtnFired = false;
           }
@@ -97,6 +102,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         font.draw(spriteBatch, stElapsed, 650, 460);
 		spriteBatch.end();
 		if((int)timePassed==gameDuration){
+			forest.stop();
 			pauseLabel.setText("Your Score is " + duckHuntStg.getHitScore());
 			Settings.addScore(duckHuntStg.getHitScore());
 			Settings.save();
@@ -113,7 +119,10 @@ public class PlayScreen extends InputAdapter implements Screen {
         	isPaused = !isPaused;
         	duckHuntStg.setPause(isPaused);
             pauseWin.visible = isPaused;
-
+            if(isPaused)
+            	forest.pause();
+            else
+            	forest.play();
 		}
 		return false;
 	};
@@ -127,6 +136,11 @@ public class PlayScreen extends InputAdapter implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub4
+		fire = Gdx.audio.newSound(Gdx.files.internal("data/fire.mp3"));
+		forest = Gdx.audio.newMusic(Gdx.files.internal("data/forest.mp3"));
+		forest.setLooping(true);
+		forest.play();
+		
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"), Gdx.files.internal("data/uiskin.png"));
 		pauseWin = new Window("Pause", skin.getStyle(WindowStyle.class), "pauseWin");
 		pauseWin.x = Gdx.graphics.getWidth() / 4;
@@ -168,6 +182,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
+		forest.stop();
 		Gdx.input.setCatchBackKey(false);
 		Gdx.input.setCatchMenuKey(false);
 	}
