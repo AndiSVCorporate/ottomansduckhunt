@@ -78,7 +78,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             ctrlStg.draw();
           if(js.isBtnFired){
             //font.draw(spriteBatch, "fire : " + cxh.getXPos() + " - " + cxh.getYPos(), 100, 400);
-        	  fire.play();
+        	  if(Settings.soundEnabled) fire.play();
             duckHuntStg.fireEvent(cxh.getXPos(), cxh.getYPos());
             js.isBtnFired = false;
           }
@@ -119,10 +119,12 @@ public class PlayScreen extends InputAdapter implements Screen {
         	isPaused = !isPaused;
         	duckHuntStg.setPause(isPaused);
             pauseWin.visible = isPaused;
-            if(isPaused)
+            if(isPaused){
             	forest.pause();
-            else
+            }else{
+            	if(Settings.soundEnabled)
             	forest.play();
+            }
 		}
 		return false;
 	};
@@ -139,6 +141,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 		fire = Gdx.audio.newSound(Gdx.files.internal("data/fire.mp3"));
 		forest = Gdx.audio.newMusic(Gdx.files.internal("data/forest.mp3"));
 		forest.setLooping(true);
+		if(Settings.soundEnabled)
 		forest.play();
 		
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"), Gdx.files.internal("data/uiskin.png"));
