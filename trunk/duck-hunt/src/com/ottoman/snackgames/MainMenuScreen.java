@@ -1,6 +1,8 @@
 package com.ottoman.snackgames;
 
 
+import java.awt.Checkbox;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -8,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -65,6 +69,8 @@ public class MainMenuScreen implements Screen {
 			@Override
 			public void click(Actor actor, float x, float y) {
 				menuWin.visible = false;
+				CheckBox chk = (CheckBox)optionsWin.getWidget("chkSound");
+				chk.setChecked(Settings.soundEnabled);
 				optionsWin.visible = true;  
 			}
 	    });
@@ -92,6 +98,23 @@ public class MainMenuScreen implements Screen {
 		optionsWin = makeDialogWin("Option Stuff", true, false);
 		optionsWin.visible = false;
 		optionsWin.row().fill().expandX();
+
+        CheckBox chk = new CheckBox("Sound Enabled", skin.getStyle(CheckBoxStyle.class), "chkSound");
+        optionsWin.row().fill().expandX();
+        optionsWin.add(chk).colspan(4);
+        
+
+		addMenuItem(optionsWin, "Save").setClickListener(new ClickListener() {
+			@Override
+			public void click(Actor actor, float x, float y) {
+				CheckBox chk = (CheckBox)optionsWin.getWidget("chkSound");
+				Settings.soundEnabled = chk.isChecked();
+				Settings.save();
+				optionsWin.visible = false;  
+				menuWin.visible = true;
+			}
+	    });
+		
 		addMenuItem(optionsWin, "< Turn Back").setClickListener(new ClickListener() {
 			@Override
 			public void click(Actor actor, float x, float y) {
