@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.ottoman.snackgames.Settings;
 import com.ottoman.snackgames.Sprite.HuntActor;
 
 
@@ -86,6 +87,7 @@ public class HuntStage extends Stage {
 			String distance = (tmpVal==0)?"close":((tmpVal==1)?"far":"medium");
 			addDuck(direction, distance);
 		}
+		if(Settings.soundEnabled)
 		quack.play();
 	}
 	
