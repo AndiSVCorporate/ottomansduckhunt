@@ -9,14 +9,14 @@ import com.badlogic.gdx.Gdx;
 
 
 public class Settings {
-    public static boolean soundEnabled = true;
+    public static boolean soundEnabled = false;
     public final static int[] highscores = new int[] { 40, 30, 20, 10, 5 };
     public final static String file = ".oosDuckHunt";
 
     public static void load() {
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(Gdx.files.external(file).read()));
+            in = new BufferedReader(new InputStreamReader(Gdx.files.local(file).read()));
             soundEnabled = Boolean.parseBoolean(in.readLine());
             for(int i = 0; i < 5; i++) {
                 highscores[i] = Integer.parseInt(in.readLine());
@@ -35,7 +35,7 @@ public class Settings {
     public static void save() {
         BufferedWriter out = null;
         try {
-            out = new BufferedWriter(new OutputStreamWriter(Gdx.files.external(file).write(false)));
+            out = new BufferedWriter(new OutputStreamWriter(Gdx.files.local(file).write(false)));
             out.write(Boolean.toString(soundEnabled));
             for(int i = 0; i < 5; i++) {
                 out.write(Integer.toString(highscores[i]));
