@@ -21,6 +21,7 @@ public class HuntStage extends Stage {
 	private boolean justCreated = false; 
 	private int hitScore = 0;
     private boolean isPaused = false;	
+    public boolean isTimesUp = false;	
     Sound quack = Gdx.audio.newSound(Gdx.files.internal("data/quack.mp3"));
 
 	public HuntStage(float width, float height, boolean stretch, SpriteBatch batch) {
@@ -94,34 +95,47 @@ public class HuntStage extends Stage {
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
-		stateTime +=  Gdx.graphics.getDeltaTime();
-		if(!isPaused){
-			if(stateTime % 8 < 1 && !justCreated){
-				addRandomDucks();
-				justCreated = true;
-			}else if(stateTime % 8 >= 1){
-				justCreated = false;
-			}
-			
-			if(this.getActors().size()>0){
-		//for(Actor act : this.getActors()){
-			//HuntActor duck = (HuntActor)act;
-				for(HuntActor duck : ducks){
-					if(duck.getStatus()=="fly"){
-						if(!duck.updatePos()){
-							this.removeActor(duck);
-							duck.remove();
-						}
-					}else{
-						duck.y--;
-						if(duck.y<=0){
-							this.removeActor(duck);
-							duck.remove();
+		if(!isTimesUp){
+			stateTime +=  Gdx.graphics.getDeltaTime();
+			if(!isPaused){
+				if(stateTime % 8 < 1 && !justCreated){
+					addRandomDucks();
+					justCreated = true;
+				}else if(stateTime % 8 >= 1){
+					justCreated = false;
+				}
+				
+				if(this.getActors().size()>0){
+			//for(Actor act : this.getActors()){
+				//HuntActor duck = (HuntActor)act;
+					for(HuntActor duck : ducks){
+						if(duck.getStatus()=="fly"){
+							if(!duck.updatePos()){
+								this.removeActor(duck);
+								duck.remove();
+							}
+						}else{
+							duck.y--;
+							if(duck.y<=0){
+								this.removeActor(duck);
+								duck.remove();
+							}
 						}
 					}
 				}
 			}
 		}
 		super.draw();
+	}
+	
+	public void restartGame(){
+		for(HuntActor duck : ducks){
+			this.removeActor(duck);
+			duck.remove();
+		}
+		isTimesUp = false;
+		setPause(false);
+		stateTime = 0;
+		hitScore = 0;
 	}
 }

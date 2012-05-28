@@ -16,7 +16,7 @@ public class Settings {
     public static void load() {
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(Gdx.files.local(file).read()));
+            in = new BufferedReader(new InputStreamReader(Gdx.files.external(file).read()));
             soundEnabled = Boolean.parseBoolean(in.readLine());
             for(int i = 0; i < 5; i++) {
                 highscores[i] = Integer.parseInt(in.readLine());
@@ -35,10 +35,12 @@ public class Settings {
     public static void save() {
         BufferedWriter out = null;
         try {
-            out = new BufferedWriter(new OutputStreamWriter(Gdx.files.local(file).write(false)));
+            out = new BufferedWriter(new OutputStreamWriter(Gdx.files.external(file).write(false)));
             out.write(Boolean.toString(soundEnabled));
+            out.newLine();
             for(int i = 0; i < 5; i++) {
                 out.write(Integer.toString(highscores[i]));
+                out.newLine();
             }
 
         } catch (IOException e) {
