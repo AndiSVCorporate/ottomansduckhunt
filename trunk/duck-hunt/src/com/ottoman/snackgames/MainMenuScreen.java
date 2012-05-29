@@ -65,6 +65,8 @@ public class MainMenuScreen implements Screen {
 				game.setScreen(new PlayScreen(game));  
 			}
 	    });
+		
+		
 
 		menuWin.addMenuButton("Options").setClickListener(new ClickListener() {
 			@Override
