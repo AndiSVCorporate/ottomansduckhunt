@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,14 +14,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class HuntActor extends Actor {
-	Animation                       walkAnimation;          // #3
-    TextureRegion[]                 walkFrames;             // #5
-    TextureRegion                   currentFrame;           // #7
+	private Animation walkAnimation;          // #3
+	private TextureRegion[] walkFrames;             // #5
+    private TextureRegion currentFrame;           // #7
     private float stateTime;
     private boolean looping;
     private String _status;
     public boolean flip = true;
+    private Rectangle[] duckRect = new Rectangle[2];    
     
+    //ShapeRenderer shape = new ShapeRenderer();
     public HuntActor(Texture texture, int rows, int cols, float frameDuration, boolean looping)
     {
  
@@ -87,9 +91,10 @@ this.looping = looping;
  
     public boolean checkHit(float bX, float bY){
     	//Circle cir = new Circle(new Vector2(this.x + (width / 2), this.y + (height / 2)), width/2);
-    	//Rectangle rect=  new Rectangle(this.x, this.y + (height / 2), width, height/2);
-    	//if(rect.contains(bX, bY)){
-    	if(bX>x && bX<x+width && bY>y && bY< y + height){
+    	//duckRect[0] =  new Rectangle(this.x, this.y + (height / 2), width / 2, height/4);
+    	//duckRect[1] =  new Rectangle(this.x + (width / 2), this.y + (height / 4), width / 2, height/2);
+    	if(duckRect[0].contains(bX, bY) || duckRect[1].contains(bX, bY)){
+    	//if(bX>x && bX<x+width && bY>y && bY< y + height){
     		_status = "hit";
     		return true;
     	}else{
@@ -121,6 +126,13 @@ this.looping = looping;
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
+		if(!flip){
+			duckRect[0] =  new Rectangle(this.x, this.y + (height / 2), width / 3, height/4);
+    		duckRect[1] =  new Rectangle(this.x + (width / 3), this.y + (height / 3), 2 * (width / 3), height/3);
+		}else{
+			duckRect[0] =  new Rectangle(this.x, this.y + (height / 3), (2 * width) / 3, (height) / 3);
+	    	duckRect[1] =  new Rectangle(this.x + (2 * (width / 3)), this.y + (height / 2), width / 3, height/4);
+		}
 		if(_status == "fly"){
 		  stateTime += Gdx.graphics.getDeltaTime();
 		  currentFrame = walkAnimation.getKeyFrame(stateTime, this.looping);
@@ -129,6 +141,12 @@ this.looping = looping;
 		if(flip)
 			tmpTr.flip(true, false);
 		batch.draw(tmpTr, x, y, width, height);
+		/*
+		shape.begin(ShapeType.Rectangle);
+		shape.rect(duckRect[0].x, duckRect[0].y, duckRect[0].width, duckRect[0].height);
+		shape.rect(duckRect[1].x, duckRect[1].y, duckRect[1].width, duckRect[1].height);
+		shape.end();
+		*/
 	}
 
 	@Override

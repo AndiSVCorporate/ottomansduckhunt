@@ -1,6 +1,7 @@
 package com.ottoman.snackgames;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
@@ -20,7 +21,8 @@ public class gamePopup extends Window {
 	private TextButton BtnYes;
 	private TextButton BtnNo;
 	private Label YesNoLabel;
-
+    private int scrW = Gdx.graphics.getWidth();
+    private int scrH = Gdx.graphics.getHeight();
 
 	public gamePopup(String title, Skin skin, String name) {
 		super(title, skin.getStyle(WindowStyle.class), name);
@@ -152,10 +154,17 @@ public class gamePopup extends Window {
 	
 	public void makeDialogWin(String sHeader, boolean isModal, boolean isMovable){
 		this.setTitle(sHeader);
-		this.x = Gdx.graphics.getWidth() / 4;
-		this.y = Gdx.graphics.getHeight() / 4;
-		this.height = Gdx.graphics.getHeight() / 2;
-		this.width = Gdx.graphics.getWidth() / 2;
+		if(scrH<400){
+			this.x = scrW / 8;
+			this.y = scrH / 8;
+			this.height = 6 * scrH / 8;
+			this.width = 6 * scrW / 8;
+		}else{
+			this.x = scrW / 4;
+			this.y = scrH / 4;
+			this.height = scrH / 2;
+			this.width = scrW / 2;
+		}
 		this.defaults().spaceBottom(10);
 		this.setModal(isModal);
 		this.setMovable(isMovable);
