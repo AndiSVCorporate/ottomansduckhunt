@@ -8,6 +8,10 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "duck-hunt";
 		cfg.useGL20 = false;
+		//480 x 800
+		//320 x 480
+		//cfg.width = 480;
+		//cfg.height = 320;
 		cfg.width = 800;
 		cfg.height = 480;
 		
