@@ -17,17 +17,27 @@ public class CrossHair extends Actor {
 	public int upBound;public int loBound; 
 	public int rtBound;public int ltBound; 
 	
+    private int scrW = 0;
+    private int scrH = 0;
 	
 	public CrossHair(Texture texture, JoyStick js){
 		crosshair = texture;
 		joyStk = js;
-		this.width = texture.getWidth();
-		this.height = texture.getHeight();
+
+		scrW = Gdx.graphics.getWidth();
+	    scrH = Gdx.graphics.getHeight();
+	    if(scrH<400){
+			this.width = texture.getWidth()/2;
+			this.height = texture.getHeight()/2;
+	    }else{
+			this.width = texture.getWidth();
+			this.height = texture.getHeight();
+	    }
 		centX = (int)((width / 2) + 10) ;
 		centY = (int)((height / 2) + 10) ;
 		rad = (int) (width / 2);
-		upBound = Gdx.graphics.getHeight();loBound = 0; 
-		rtBound = Gdx.graphics.getWidth();ltBound = 0; 
+		upBound = scrH;loBound = 0; 
+		rtBound = scrW;ltBound = 0; 
 
 		centerPosition();
 		
@@ -46,7 +56,7 @@ public class CrossHair extends Actor {
 		if(xNew>=ltBound && xNew<=rtBound)xPos = xNew;
 		if(yNew>=loBound && yNew<=upBound)yPos = yNew;
 		
-		batch.draw(crosshair, xPos - rad, yPos - rad);
+		batch.draw(crosshair, xPos - rad, yPos - rad, width, height);
 	}
 
 	@Override
